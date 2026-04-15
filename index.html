@@ -1,159 +1,205 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Burger Pome · Pamplona</title>
-  
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-  
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap');
-    body { font-family: 'Outfit', sans-serif; background-color: #0B0F0E; scroll-behavior: smooth; }
-    .glass { background: rgba(11, 15, 14, 0.8); backdrop-filter: blur(12px); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burger Pome | Smash Burgers Pamplona</title>
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Syncopate:wght@700&display=swap');
+        
+        :root {
+            --pome-verde: #1A9E8F;
+            --pome-oro: #F5C518;
+            --pome-negro: #0B0F0E;
+        }
+
+        body {
+            background-color: var(--pome-negro);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-title { font-family: 'Syncopate', sans-serif; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0B0F0E; }
+        ::-webkit-scrollbar-thumb { background: #1A9E8F; border-radius: 10px; }
+
+        /* Efecto de cristal para el nav */
+        .glass {
+            background: rgba(11, 15, 14, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+    </style>
 </head>
 <body>
 
-<div id="root"></div>
+    <div id="root"></div>
 
-<script type="text/babel">
-  const { motion, useScroll, useTransform } = FramerMotion;
-  const { useState, useEffect } = React;
+    <script type="text/babel">
+        const { motion, useScroll, useTransform, AnimatePresence } = FramerMotion;
 
-  function App() {
-    const { scrollYProgress } = useScroll();
-    
-    // Parallax para el fondo y el texto
-    const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
-    const textY = useTransform(scrollYProgress, [0, 1], ["0%", "120%"]);
-
-    return (
-      <div className="text-gray-100">
-        
-        {/* NAV */}
-        <nav className="fixed top-0 w-full z-50 glass border-b border-teal-500/20 px-8 py-4 flex justify-between items-center">
-          <div className="font-black text-2xl tracking-tighter">
-            BURGER <span className="text-[#1A9E8F]">POME</span>
-          </div>
-          <a href="#contacto" className="bg-[#F5C518] text-black px-5 py-2 rounded-sm font-bold uppercase text-xs hover:scale-105 transition-transform">
-            Contacto
-          </a>
-        </nav>
-
-        {/* HERO PARALLAX */}
-        <section className="relative h-screen flex items-center justify-center overflow-hidden">
-          <motion.div 
-            style={{ y: bgY }}
-            className="absolute inset-0 z-0 bg-[url('https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1965&auto=format&fit=crop')] bg-cover bg-center opacity-20"
-          />
-          <motion.div style={{ y: textY }} className="relative z-10 text-center px-4">
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-7xl md:text-9xl font-black mb-4 tracking-tighter"
-            >
-              BURGER <span className="text-[#1A9E8F]">POME</span>
-            </motion.h1>
-            <p className="text-xl md:text-2xl text-teal-100/60 font-light italic">Smash Burgers & Arte en Pamplona</p>
-          </motion.div>
-        </section>
-
-        {/* CARTA SIMPLIFICADA */}
-        <section className="py-20 px-6 max-w-5xl mx-auto">
-          <h2 className="text-4xl font-black mb-12 border-l-4 border-[#1A9E8F] pl-4 uppercase">La Carta</h2>
-          <div className="grid md:grid-cols-2 gap-10">
-            {[
-              { n: "Clásica Pome", p: "8,50", d: "Doble smash, cheddar, bacon y salsa secreta." },
-              { n: "Trufada", p: "9,50", d: "Doble smash, havarti y mayonesa de trufa negra." },
-              { n: "Quesadilla Vacuno", p: "6,50", d: "Carne picada, mix de quesos y cebolla roja." },
-              { n: "Bravas Pome", p: "5,00", d: "Patatas gajo con nuestra brava artesanal." }
-            ].map((item, i) => (
-              <motion.div 
-                key={i}
-                whileHover={{ x: 10 }}
-                className="group cursor-pointer border-b border-white/10 pb-4"
-              >
-                <div className="flex justify-between items-baseline">
-                  <h3 className="text-2xl font-bold group-hover:text-[#1A9E8F] transition-colors uppercase">{item.n}</h3>
-                  <span className="text-[#F5C518] font-black">{item.p}€</span>
-                </div>
-                <p className="text-gray-500 mt-1">{item.d}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* GALERÍA CON EFECTO 3D */}
-        <section className="py-20 bg-black/30">
-          <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((img) => (
-              <motion.div
-                key={img}
-                whileHover={{ 
-                  rotateY: 15, 
-                  rotateX: -10,
-                  scale: 1.05,
-                  z: 50
-                }}
-                transition={{ type: "spring", stiffness: 200 }}
-                style={{ perspective: 1000 }}
-                className="relative aspect-square bg-zinc-900 rounded-lg overflow-hidden border border-white/5"
-              >
-                <img 
-                  src={`https://images.unsplash.com/photo-1594212699903-ec8a3ecc50f1?q=80&w=800&auto=format&fit=crop`} 
-                  className="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity"
-                  alt="Plato"
-                />
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* CONTACTO & GOOGLE MAPS */}
-        <section id="contacto" className="py-20 px-6 max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-5xl font-black mb-8 italic">¿PASAS A VERNOS?</h2>
-              <div className="space-y-6 text-lg">
-                <p className="flex items-center gap-4">
-                  <span className="text-[#F5C518]">📍</span> Av. Pío XII, 14, Pamplona
-                </p>
-                <p className="flex items-center gap-4 text-3xl font-bold text-[#1A9E8F]">
-                  <span className="text-[#F5C518] text-base">📞</span> 686 140 839
-                </p>
-                <div className="pt-4 opacity-50 text-sm tracking-widest uppercase">
-                  Martes a Domingo de 19:30 a 23:30
-                </p>
-              </div>
-            </div>
+        function App() {
+            const { scrollYProgress } = useScroll();
             
-            <div className="h-[400px] bg-zinc-900 rounded-2xl border-2 border-[#1A9E8F]/30 overflow-hidden relative">
-               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2927.43343183592!2d-1.6565!3d42.809!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDLCsDQ4JzMyLjQiTiAxwrAzOScyMy40Ilc!5e0!3m2!1ses!2ses!4v1625500000000!5m2!1ses!2ses" 
-                className="w-full h-full grayscale invert opacity-80"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-              ></iframe>
-            </div>
-          </div>
-        </section>
+            // Efectos Parallax
+            const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+            const textY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
-        <footer className="py-10 text-center text-xs text-gray-600 border-t border-white/5 uppercase tracking-[0.3em]">
-          Burger Pome © 2026 · Pamplona
-        </footer>
-      </div>
-    );
-  }
+            return (
+                <div className="relative">
+                    
+                    {/* NAV */}
+                    <nav className="fixed top-0 w-full z-50 glass border-b border-white/10 px-6 py-4 flex justify-between items-center">
+                        <div className="font-title text-xl tracking-tighter">
+                            BURGER <span className="text-[#1A9E8F]">POME</span>
+                        </div>
+                        <div className="space-x-6 hidden md:flex text-xs font-bold uppercase tracking-widest">
+                            <a href="#carta" className="hover:text-[#1A9E8F] transition-colors">Carta</a>
+                            <a href="#galeria" className="hover:text-[#1A9E8F] transition-colors">Fotos</a>
+                            <a href="#contacto" className="hover:text-[#1A9E8F] transition-colors text-[#F5C518]">Reservar</a>
+                        </div>
+                    </nav>
 
-  const root = ReactDOM.createRoot(document.getElementById('root'));
-  root.render(<App />);
-</script>
+                    {/* HERO SECTION CON PARALLAX */}
+                    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+                        <motion.div 
+                            style={{ y: bgY }}
+                            className="absolute inset-0 z-0 bg-[url('https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center opacity-30 shadow-[inset_0_0_200px_rgba(0,0,0,0.9)]"
+                        />
+                        <motion.div style={{ y: textY }} className="relative z-10 text-center">
+                            <motion.h1 
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 1 }}
+                                className="font-title text-6xl md:text-9xl leading-none mb-6 tracking-tighter"
+                            >
+                                LA MEJOR<br/>
+                                <span className="text-[#1A9E8F]">SMASH</span>
+                            </motion.h1>
+                            <p className="text-gray-400 tracking-[0.5em] uppercase text-sm md:text-base px-4">Directo desde Pamplona a tu paladar</p>
+                        </motion.div>
+                        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+                            ↓
+                        </div>
+                    </section>
+
+                    {/* CARTA */}
+                    <section id="carta" className="py-32 px-6 max-w-5xl mx-auto">
+                        <div className="grid md:grid-cols-2 gap-16">
+                            <div>
+                                <h2 className="font-title text-3xl mb-12 flex items-center gap-4">
+                                    <span className="w-12 h-[2px] bg-[#1A9E8F]"></span> CARTA
+                                </h2>
+                                <div className="space-y-12">
+                                    <MenuItem 
+                                        nombre="Pome Clásica" 
+                                        precio="8.50" 
+                                        desc="Doble smash 90g, queso cheddar, cebolla picada y nuestra salsa secreta Pome." 
+                                    />
+                                    <MenuItem 
+                                        nombre="La Trufada" 
+                                        precio="10.20" 
+                                        desc="Carne madurada, queso provolone, huevo frito y crema de trufa blanca." 
+                                    />
+                                    <MenuItem 
+                                        nombre="Bacon Boom" 
+                                        precio="9.50" 
+                                        desc="Mermelada de bacon casera, doble queso y extra de crujiente." 
+                                    />
+                                </div>
+                            </div>
+                            <div className="bg-zinc-900/50 p-8 rounded-3xl border border-white/5 self-start sticky top-24">
+                                <h3 className="font-title text-[#F5C518] mb-4 text-sm tracking-widest">RESEÑA DESTACADA</h3>
+                                <p className="italic text-lg text-gray-300">"El local es brutal y la hamburguesa de trufa es de otro planeta. ¡Volveremos!"</p>
+                                <div className="mt-4 text-[#1A9E8F] font-black text-xs tracking-tighter">★★★★★ GOOGLE REVIEWS</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* GALERÍA 3D */}
+                    <section id="galeria" className="py-20 overflow-hidden">
+                        <h2 className="text-center font-title text-2xl mb-16 opacity-20 tracking-[1em]">GALERÍA</h2>
+                        <div className="flex flex-wrap justify-center gap-8 px-6">
+                            {[1, 2, 3].map((item) => (
+                                <motion.div
+                                    key={item}
+                                    whileHover={{ rotateX: 10, rotateY: -10, scale: 1.05 }}
+                                    style={{ perspective: 1000 }}
+                                    className="w-full md:w-80 h-96 bg-zinc-800 rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+                                >
+                                    <img 
+                                        src={`https://images.unsplash.com/photo-1594212699903-ec8a3ecc50f1?q=80&w=800&auto=format&fit=crop`} 
+                                        className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                                        alt="Burger Pome"
+                                    />
+                                </motion.div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* CONTACTO */}
+                    <section id="contacto" className="py-32 px-6 border-t border-white/5">
+                        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20">
+                            <div>
+                                <h2 className="font-title text-5xl mb-8 leading-tight">¿Hambre?<br/><span className="text-[#F5C518]">Pide ya.</span></h2>
+                                <div className="space-y-6">
+                                    <div className="group border-b border-white/10 pb-4">
+                                        <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Ubicación</p>
+                                        <p className="text-xl">Av. Pío XII, 14, 31008 Pamplona</p>
+                                    </div>
+                                    <div className="group border-b border-white/10 pb-4">
+                                        <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Teléfono</p>
+                                        <a href="tel:686140839" className="text-3xl font-black text-[#1A9E8F] hover:text-[#F5C518] transition-colors">686 140 839</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="h-96 rounded-3xl overflow-hidden border-4 border-[#1A9E8F]/20">
+                                {/* Placeholder de Mapa con estilo oscuro */}
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2927.420658428456!2d-1.6565!3d42.8085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd50930722880f01%3A0x7d6f5f5f5f5f5f5f!2sAv.%20de%20P%C3%ADo%20XII%2C%2014%2C%2031008%20Pamplona%2C%20Navarra!5e0!3m2!1ses!2ses!4v1700000000000" 
+                                    width="100%" height="100%" style={{ border: 0, filter: 'invert(90%) hue-rotate(150deg)' }} 
+                                    allowFullScreen="" loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+                    </section>
+
+                    <footer className="py-12 text-center text-[10px] text-gray-600 tracking-[0.5em] uppercase border-t border-white/5">
+                        Burger Pome © 2026 • Design by AI
+                    </footer>
+                </div>
+            );
+        }
+
+        function MenuItem({ nombre, precio, desc }) {
+            return (
+                <motion.div 
+                    whileHover={{ x: 10 }}
+                    className="cursor-pointer group"
+                >
+                    <div className="flex justify-between items-baseline mb-2">
+                        <h3 className="font-title text-xl group-hover:text-[#1A9E8F] transition-colors uppercase">{nombre}</h3>
+                        <span className="text-[#F5C518] font-bold tracking-tighter">{precio}€</span>
+                    </div>
+                    <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+                </motion.div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 
 </body>
 </html>
