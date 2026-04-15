@@ -1,205 +1,182 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burger Pome | Smash Burgers Pamplona</title>
-    
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
-    
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Syncopate:wght@700&display=swap');
-        
-        :root {
-            --pome-verde: #1A9E8F;
-            --pome-oro: #F5C518;
-            --pome-negro: #0B0F0E;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Burger Pome · Pamplona</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
 
-        body {
-            background-color: var(--pome-negro);
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #1A9E8F;
+      --teal-light: #2BBFAE;
+      --yellow: #F5C518;
+      --dark: #0B0F0E;
+      --dark2: #111817;
+      --off-white: #F0F4F3;
+      --muted: rgba(240,244,243,0.55);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --font-body: 'Outfit', sans-serif;
+    }
 
-        .font-title { font-family: 'Syncopate', sans-serif; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--off-white); font-family: var(--font-body); overflow-x: hidden; }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0B0F0E; }
-        ::-webkit-scrollbar-thumb { background: #1A9E8F; border-radius: 10px; }
+    /* Estilo General */
+    .section-tag { color: var(--teal-light); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; display: block; margin-bottom: 10px; }
+    .section-title { font-family: var(--font-display); font-size: 3rem; letter-spacing: 2px; margin-bottom: 20px; }
 
-        /* Efecto de cristal para el nav */
-        .glass {
-            background: rgba(11, 15, 14, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-        }
-    </style>
+    /* NAV */
+    nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+    nav.scrolled { background: rgba(11,15,14,0.95); backdrop-filter: blur(10px); padding: 12px 40px; border-bottom: 1px solid rgba(26,158,143,0.2); }
+    .logo { font-family: var(--font-display); font-size: 24px; letter-spacing: 4px; color: white; text-decoration: none; }
+    .logo span { color: var(--teal-light); }
+    .nav-links { display: flex; gap: 25px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+    .nav-links a:hover { color: var(--teal-light); }
+
+    /* HERO */
+    .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; text-align: center; overflow: hidden; }
+    .hero-img { position: absolute; inset: 0; background: url('burger.jpg') center/cover; opacity: 0.3; filter: saturate(0.5); transform: scale(1.1); }
+    .hero-content { z-index: 2; padding: 0 20px; }
+    .hero-h1 { font-family: var(--font-display); font-size: clamp(80px, 15vw, 160px); line-height: 0.9; margin-bottom: 20px; }
+    .hero-h1 span { -webkit-text-stroke: 1px var(--yellow); color: transparent; }
+
+    /* CARTA */
+    .menu-section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 40px; }
+    .menu-card { background: var(--dark2); padding: 30px; border-left: 3px solid var(--teal); position: relative; transition: 0.3s; }
+    .menu-card:hover { transform: translateY(-5px); background: #1a2120; }
+    .price { color: var(--yellow); font-family: var(--font-display); font-size: 22px; position: absolute; top: 30px; right: 30px; }
+    .menu-card h3 { font-family: var(--font-serif); font-size: 20px; margin-bottom: 10px; padding-right: 60px; }
+    .menu-card p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    /* GALERIA 3D */
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; padding: 10px; }
+    .g-item { height: 350px; overflow: hidden; position: relative; border-radius: 4px; }
+    .g-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; filter: grayscale(0.3); }
+    .g-item:hover img { transform: scale(1.1); filter: grayscale(0); }
+    .g-item span { position: absolute; bottom: 20px; left: 20px; font-family: var(--font-display); font-size: 20px; letter-spacing: 2px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+
+    /* INFO */
+    .contact { padding: 100px 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px; max-width: 1100px; margin: 0 auto; }
+    .map-placeholder { background: var(--dark2); height: 400px; border: 2px solid var(--teal); border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .info-item { margin-bottom: 30px; }
+    .info-item h4 { color: var(--teal-light); text-transform: uppercase; font-size: 12px; letter-spacing: 2px; margin-bottom: 5px; }
+    .info-item p { font-size: 20px; font-weight: 600; }
+
+    footer { text-align: center; padding: 50px; color: var(--muted); font-size: 10px; letter-spacing: 3px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero-h1 { font-size: 70px; }
+    }
+  </style>
 </head>
 <body>
 
-    <div id="root"></div>
+  <nav id="navbar">
+    <a href="#" class="logo">BURGER <span>POME</span></a>
+    <ul class="nav-links">
+      <li><a href="#carta">La Carta</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#contacto">Ubicación</a></li>
+    </ul>
+    <a href="tel:686140839" style="background: var(--yellow); color: black; padding: 8px 15px; border-radius: 4px; font-weight: bold; text-decoration: none; font-size: 12px;">LLAMAR</a>
+  </nav>
 
-    <script type="text/babel">
-        const { motion, useScroll, useTransform, AnimatePresence } = FramerMotion;
+  <section class="hero">
+    <div class="hero-img"></div>
+    <div class="hero-content">
+      <span class="section-tag">Pio XII, 14 · Pamplona</span>
+      <h1 class="hero-h1">SMASH<br><span>POME</span></h1>
+      <p style="font-style: italic; color: var(--muted)">"El arte de la hamburguesa bien hecha"</p>
+    </div>
+  </section>
 
-        function App() {
-            const { scrollYProgress } = useScroll();
-            
-            // Efectos Parallax
-            const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-            const textY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  <section class="menu-section" id="carta">
+    <span class="section-tag">Selección Gourmet</span>
+    <h2 class="section-title">Imprescindibles</h2>
+    
+    <div class="menu-grid">
+      <div class="menu-card">
+        <span class="price">9.50€</span>
+        <h3>La Smash Clásica</h3>
+        <p>Doble carne de vacuno smash, queso fundido, cebolla caramelizada y nuestra icónica salsa Pome en pan brioche artesanal.</p>
+      </div>
+      <div class="menu-card">
+        <span class="price">7.50€</span>
+        <h3>Quesadilla Vacuno</h3>
+        <p>Tortilla de trigo crujiente rellena de carne picada sazonada, mix de quesos y vegetales frescos. (La de la foto 😉).</p>
+      </div>
+      <div class="menu-card">
+        <span class="price">6.00€</span>
+        <h3>Bravas Pome</h3>
+        <p>Patatas de verdad, cortadas a mano, con doble salsa: alioli suave y nuestra brava secreta picante.</p>
+      </div>
+    </div>
+  </section>
 
-            return (
-                <div className="relative">
-                    
-                    {/* NAV */}
-                    <nav className="fixed top-0 w-full z-50 glass border-b border-white/10 px-6 py-4 flex justify-between items-center">
-                        <div className="font-title text-xl tracking-tighter">
-                            BURGER <span className="text-[#1A9E8F]">POME</span>
-                        </div>
-                        <div className="space-x-6 hidden md:flex text-xs font-bold uppercase tracking-widest">
-                            <a href="#carta" className="hover:text-[#1A9E8F] transition-colors">Carta</a>
-                            <a href="#galeria" className="hover:text-[#1A9E8F] transition-colors">Fotos</a>
-                            <a href="#contacto" className="hover:text-[#1A9E8F] transition-colors text-[#F5C518]">Reservar</a>
-                        </div>
-                    </nav>
+  <section id="galeria">
+    <div class="gallery">
+      <div class="g-item">
+        <img src="burger.jpg" alt="Smash Burger">
+        <span>SMASH REAL</span>
+      </div>
+      <div class="g-item">
+        <img src="quesadilla de carne.jpg" alt="Quesadilla">
+        <span>QUESADILLAS</span>
+      </div>
+      <div class="g-item">
+        <img src="bravas 2.jpg" alt="Bravas">
+        <span>NUESTRAS BRAVAS</span>
+      </div>
+      <div class="g-item">
+        <img src="tostada de lomo.jpg" alt="Tostada">
+        <span>TOSTAS</span>
+      </div>
+    </div>
+  </section>
 
-                    {/* HERO SECTION CON PARALLAX */}
-                    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-                        <motion.div 
-                            style={{ y: bgY }}
-                            className="absolute inset-0 z-0 bg-[url('https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center opacity-30 shadow-[inset_0_0_200px_rgba(0,0,0,0.9)]"
-                        />
-                        <motion.div style={{ y: textY }} className="relative z-10 text-center">
-                            <motion.h1 
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 1 }}
-                                className="font-title text-6xl md:text-9xl leading-none mb-6 tracking-tighter"
-                            >
-                                LA MEJOR<br/>
-                                <span className="text-[#1A9E8F]">SMASH</span>
-                            </motion.h1>
-                            <p className="text-gray-400 tracking-[0.5em] uppercase text-sm md:text-base px-4">Directo desde Pamplona a tu paladar</p>
-                        </motion.div>
-                        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
-                            ↓
-                        </div>
-                    </section>
+  <section class="contact" id="contacto">
+    <div>
+      <span class="section-tag">Contacto</span>
+      <h2 class="section-title">Ven a vernos</h2>
+      <div class="info-item">
+        <h4>DIRECCIÓN</h4>
+        <p>Av. de Pío XII, 14<br>31008 Pamplona, Navarra</p>
+      </div>
+      <div class="info-item">
+        <h4>TELÉFONO PREDIDOS</h4>
+        <p style="color: var(--teal-light)">686 140 839</p>
+      </div>
+      <div class="info-item">
+        <h4>HORARIO</h4>
+        <p>Martes a Domingo<br>19:30 – 23:30</p>
+      </div>
+    </div>
+    <div class="map-placeholder">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2927.4334346765184!2d-1.6568853!3d42.8055627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd5093006a8e8095%3A0x633d7b819f0402c!2sAv.%20de%20P%C3%ADo%20XII%2C%2014%2C%2031008%20Pamplona%2C%20Navarra!5e0!3m2!1ses!2ses!4v1710000000000" width="100%" height="100%" style="border:0; filter: invert(90%) hue-rotate(150deg);" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </section>
 
-                    {/* CARTA */}
-                    <section id="carta" className="py-32 px-6 max-w-5xl mx-auto">
-                        <div className="grid md:grid-cols-2 gap-16">
-                            <div>
-                                <h2 className="font-title text-3xl mb-12 flex items-center gap-4">
-                                    <span className="w-12 h-[2px] bg-[#1A9E8F]"></span> CARTA
-                                </h2>
-                                <div className="space-y-12">
-                                    <MenuItem 
-                                        nombre="Pome Clásica" 
-                                        precio="8.50" 
-                                        desc="Doble smash 90g, queso cheddar, cebolla picada y nuestra salsa secreta Pome." 
-                                    />
-                                    <MenuItem 
-                                        nombre="La Trufada" 
-                                        precio="10.20" 
-                                        desc="Carne madurada, queso provolone, huevo frito y crema de trufa blanca." 
-                                    />
-                                    <MenuItem 
-                                        nombre="Bacon Boom" 
-                                        precio="9.50" 
-                                        desc="Mermelada de bacon casera, doble queso y extra de crujiente." 
-                                    />
-                                </div>
-                            </div>
-                            <div className="bg-zinc-900/50 p-8 rounded-3xl border border-white/5 self-start sticky top-24">
-                                <h3 className="font-title text-[#F5C518] mb-4 text-sm tracking-widest">RESEÑA DESTACADA</h3>
-                                <p className="italic text-lg text-gray-300">"El local es brutal y la hamburguesa de trufa es de otro planeta. ¡Volveremos!"</p>
-                                <div className="mt-4 text-[#1A9E8F] font-black text-xs tracking-tighter">★★★★★ GOOGLE REVIEWS</div>
-                            </div>
-                        </div>
-                    </section>
+  <footer>
+    BURGER POME PAMPLONA © 2026 · DISEÑO PARA GASTROBAR
+  </footer>
 
-                    {/* GALERÍA 3D */}
-                    <section id="galeria" className="py-20 overflow-hidden">
-                        <h2 className="text-center font-title text-2xl mb-16 opacity-20 tracking-[1em]">GALERÍA</h2>
-                        <div className="flex flex-wrap justify-center gap-8 px-6">
-                            {[1, 2, 3].map((item) => (
-                                <motion.div
-                                    key={item}
-                                    whileHover={{ rotateX: 10, rotateY: -10, scale: 1.05 }}
-                                    style={{ perspective: 1000 }}
-                                    className="w-full md:w-80 h-96 bg-zinc-800 rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
-                                >
-                                    <img 
-                                        src={`https://images.unsplash.com/photo-1594212699903-ec8a3ecc50f1?q=80&w=800&auto=format&fit=crop`} 
-                                        className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                                        alt="Burger Pome"
-                                    />
-                                </motion.div>
-                            ))}
-                        </div>
-                    </section>
-
-                    {/* CONTACTO */}
-                    <section id="contacto" className="py-32 px-6 border-t border-white/5">
-                        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20">
-                            <div>
-                                <h2 className="font-title text-5xl mb-8 leading-tight">¿Hambre?<br/><span className="text-[#F5C518]">Pide ya.</span></h2>
-                                <div className="space-y-6">
-                                    <div className="group border-b border-white/10 pb-4">
-                                        <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Ubicación</p>
-                                        <p className="text-xl">Av. Pío XII, 14, 31008 Pamplona</p>
-                                    </div>
-                                    <div className="group border-b border-white/10 pb-4">
-                                        <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">Teléfono</p>
-                                        <a href="tel:686140839" className="text-3xl font-black text-[#1A9E8F] hover:text-[#F5C518] transition-colors">686 140 839</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="h-96 rounded-3xl overflow-hidden border-4 border-[#1A9E8F]/20">
-                                {/* Placeholder de Mapa con estilo oscuro */}
-                                <iframe 
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2927.420658428456!2d-1.6565!3d42.8085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd50930722880f01%3A0x7d6f5f5f5f5f5f5f!2sAv.%20de%20P%C3%ADo%20XII%2C%2014%2C%2031008%20Pamplona%2C%20Navarra!5e0!3m2!1ses!2ses!4v1700000000000" 
-                                    width="100%" height="100%" style={{ border: 0, filter: 'invert(90%) hue-rotate(150deg)' }} 
-                                    allowFullScreen="" loading="lazy">
-                                </iframe>
-                            </div>
-                        </div>
-                    </section>
-
-                    <footer className="py-12 text-center text-[10px] text-gray-600 tracking-[0.5em] uppercase border-t border-white/5">
-                        Burger Pome © 2026 • Design by AI
-                    </footer>
-                </div>
-            );
-        }
-
-        function MenuItem({ nombre, precio, desc }) {
-            return (
-                <motion.div 
-                    whileHover={{ x: 10 }}
-                    className="cursor-pointer group"
-                >
-                    <div className="flex justify-between items-baseline mb-2">
-                        <h3 className="font-title text-xl group-hover:text-[#1A9E8F] transition-colors uppercase">{nombre}</h3>
-                        <span className="text-[#F5C518] font-bold tracking-tighter">{precio}€</span>
-                    </div>
-                    <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
-                </motion.div>
-            );
-        }
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
-
+  <script>
+    window.onscroll = function() {
+      var nav = document.getElementById('navbar');
+      if (window.pageYOffset > 50) {
+        nav.classList.add("scrolled");
+      } else {
+        nav.classList.remove("scrolled");
+      }
+    };
+  </script>
 </body>
 </html>
